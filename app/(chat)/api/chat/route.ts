@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
   });
 
-  const { tools } = await initializeAgent({ network, privateKey: session.user.privateKey });
+  const { tools } = await initializeAgent({ network, privateKey: session.user.privateKey as `0x${string}` });
 
   return createDataStreamResponse({
     execute: (dataStream) => {
