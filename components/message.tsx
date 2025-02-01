@@ -3,22 +3,22 @@
 import type { ChatRequestOptions, Message } from 'ai';
 import cx from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, useMemo, useState } from 'react';
+import { memo, useState } from 'react';
 
 import type { Vote } from '@/lib/db/schema';
 
-import { DocumentToolCall, DocumentToolResult } from './document';
 import { PencilEditIcon, SparklesIcon } from './icons';
 import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
-import { Weather } from './weather';
 import equal from 'fast-deep-equal';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { MessageEditor } from './message-editor';
-import { DocumentPreview } from './document-preview';
+import { getToolInfo } from '@/lib/ai/agentkit/tool-info';
+import { ChevronDown } from 'lucide-react';
 
 const PurePreviewMessage = ({
   chatId,
@@ -80,6 +80,54 @@ const PurePreviewMessage = ({
               </div>
             )}
 
+            {message.toolInvocations && message.toolInvocations.length > 0 && (
+              <div className="flex flex-col gap-4">
+                {message.toolInvocations.map((toolInvocation) => {
+                  const { toolName, toolCallId, state, args } = toolInvocation;
+
+                  const toolInfo = getToolInfo(toolName);
+
+                  if (state === 'result') {
+                    const { result } = toolInvocation;
+
+                    return (
+                      <Collapsible key={toolCallId} className="flex flex-col gap-2">
+                        <CollapsibleTrigger className="flex flex-row items-center gap-2">
+                          {toolInfo?.icon}
+                          <p>{toolInfo?.title || toolName}</p>
+                          <div className="stat">
+                            <ChevronDown className="w-4 h-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+                          </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <div className="rounded-md bg-neutral-100 p-2">
+                            <Markdown>{result}</Markdown>
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    );
+                  }
+                  return (
+                    <div
+                      key={toolCallId}
+                      className={cx({
+                        skeleton: ['getWeather'].includes(toolName),
+                      })}
+                    >
+                      {toolInfo ? (
+                        <div className="flex flex-row items-center gap-2">
+                          {toolInfo.icon}
+                          <p>{toolInfo.loading}</p>
+                        </div>
+                      ) : (
+                        <p>{toolName}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
             {message.content && mode === 'view' && (
               <div className="flex flex-row gap-2 items-start">
                 {message.role === 'user' && !isReadonly && (
@@ -101,7 +149,7 @@ const PurePreviewMessage = ({
 
                 <div
                   className={cn('flex flex-col gap-4', {
-                    'bg-primary text-primary-foreground px-3 py-2 rounded-xl':
+                    'bg-blue-600 dark:bg-blue-400 text-primary-foreground px-3 py-2 rounded-xl':
                       message.role === 'user',
                   })}
                 >
@@ -121,71 +169,6 @@ const PurePreviewMessage = ({
                   setMessages={setMessages}
                   reload={reload}
                 />
-              </div>
-            )}
-
-            {message.toolInvocations && message.toolInvocations.length > 0 && (
-              <div className="flex flex-col gap-4">
-                {message.toolInvocations.map((toolInvocation) => {
-                  const { toolName, toolCallId, state, args } = toolInvocation;
-
-                  if (state === 'result') {
-                    const { result } = toolInvocation;
-
-                    return (
-                      <div key={toolCallId}>
-                        {toolName === 'getWeather' ? (
-                          <Weather weatherAtLocation={result} />
-                        ) : toolName === 'createDocument' ? (
-                          <DocumentPreview
-                            isReadonly={isReadonly}
-                            result={result}
-                          />
-                        ) : toolName === 'updateDocument' ? (
-                          <DocumentToolResult
-                            type="update"
-                            result={result}
-                            isReadonly={isReadonly}
-                          />
-                        ) : toolName === 'requestSuggestions' ? (
-                          <DocumentToolResult
-                            type="request-suggestions"
-                            result={result}
-                            isReadonly={isReadonly}
-                          />
-                        ) : (
-                          <pre>{JSON.stringify(result, null, 2)}</pre>
-                        )}
-                      </div>
-                    );
-                  }
-                  return (
-                    <div
-                      key={toolCallId}
-                      className={cx({
-                        skeleton: ['getWeather'].includes(toolName),
-                      })}
-                    >
-                      {toolName === 'getWeather' ? (
-                        <Weather />
-                      ) : toolName === 'createDocument' ? (
-                        <DocumentPreview isReadonly={isReadonly} args={args} />
-                      ) : toolName === 'updateDocument' ? (
-                        <DocumentToolCall
-                          type="update"
-                          args={args}
-                          isReadonly={isReadonly}
-                        />
-                      ) : toolName === 'requestSuggestions' ? (
-                        <DocumentToolCall
-                          type="request-suggestions"
-                          args={args}
-                          isReadonly={isReadonly}
-                        />
-                      ) : null}
-                    </div>
-                  );
-                })}
               </div>
             )}
 
