@@ -7,7 +7,7 @@ import { memo, useState } from 'react';
 
 import type { Vote } from '@/lib/db/schema';
 
-import { PencilEditIcon, SparklesIcon } from './icons';
+import { PencilEditIcon, BotIcon } from './icons';
 import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
@@ -63,7 +63,7 @@ const PurePreviewMessage = ({
           {message.role === 'assistant' && (
             <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border bg-background">
               <div className="translate-y-px">
-                <SparklesIcon size={14} />
+                <BotIcon />
               </div>
             </div>
           )}
@@ -96,7 +96,7 @@ const PurePreviewMessage = ({
                           {toolInfo?.icon}
                           <p>{toolInfo?.title || toolName}</p>
                           <div className="stat">
-                            <ChevronDown className="w-4 h-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+                            <ChevronDown className="size-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
                           </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
@@ -225,7 +225,7 @@ export const ThinkingMessage = () => {
         )}
       >
         <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
-          <SparklesIcon size={14} />
+          <BotIcon />
         </div>
 
         <div className="flex flex-col gap-2 w-full">

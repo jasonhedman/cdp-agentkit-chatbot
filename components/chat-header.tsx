@@ -12,15 +12,18 @@ import { useSidebar } from './ui/sidebar';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { VisibilityType, VisibilitySelector } from './visibility-selector';
+import { NetworkSelector } from './network-selector';
 
 function PureChatHeader({
   chatId,
   selectedModelId,
+  selectedNetworkName,
   selectedVisibilityType,
   isReadonly,
 }: {
   chatId: string;
   selectedModelId: string;
+  selectedNetworkName: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
 }) {
@@ -53,6 +56,13 @@ function PureChatHeader({
       )}
 
       {!isReadonly && (
+        <NetworkSelector
+          selectedNetworkName={selectedNetworkName}
+          className="order-1 md:order-2"
+        />
+      )}
+
+      {!isReadonly && (
         <ModelSelector
           selectedModelId={selectedModelId}
           className="order-1 md:order-2"
@@ -71,5 +81,5 @@ function PureChatHeader({
 }
 
 export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
-  return prevProps.selectedModelId === nextProps.selectedModelId;
+  return prevProps.selectedModelId === nextProps.selectedModelId && prevProps.selectedNetworkName === nextProps.selectedNetworkName;
 });

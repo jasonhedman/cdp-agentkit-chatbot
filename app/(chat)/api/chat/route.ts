@@ -6,7 +6,7 @@ import {
 } from 'ai';
 
 import { auth } from '@/app/(auth)/auth';
-import { customModel } from '@/lib/ai';
+import { getModel } from '@/lib/ai';
 import { models } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
 import {
@@ -31,7 +31,8 @@ export async function POST(request: Request) {
     id,
     messages,
     modelId,
-  }: { id: string; messages: Array<Message>; modelId: string } =
+    network,
+  }: { id: string; messages: Array<Message>; modelId: string; network: string } =
     await request.json();
 
   const session = await auth();
@@ -63,12 +64,12 @@ export async function POST(request: Request) {
     messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
   });
 
-  const { tools } = await initializeAgent();
+  const { tools } = await initializeAgent({ network, privateKey: session.user.privateKey });
 
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
-        model: customModel(model.apiIdentifier),
+        model: getModel(model),
         system: systemPrompt,
         messages,
         maxSteps: 5,

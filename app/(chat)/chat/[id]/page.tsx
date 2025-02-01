@@ -7,6 +7,7 @@ import { DEFAULT_MODEL_NAME, models } from '@/lib/ai/models';
 import { getChatById, getMessagesByChatId } from '@/lib/db/queries';
 import { convertToUIMessages } from '@/lib/utils';
 import { DataStreamHandler } from '@/components/data-stream-handler';
+import { SUPPORTED_NETWORKS, DEFAULT_NETWORK } from '@/lib/networks';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -39,12 +40,16 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     models.find((model) => model.id === modelIdFromCookie)?.id ||
     DEFAULT_MODEL_NAME;
 
+  const networkFromCookie = cookieStore.get('network')?.value;
+  const selectedNetwork = (SUPPORTED_NETWORKS.find(n => n.name === networkFromCookie)?.name || DEFAULT_NETWORK.name);
+
   return (
     <>
       <Chat
         id={chat.id}
         initialMessages={convertToUIMessages(messagesFromDb)}
         selectedModelId={selectedModelId}
+        selectedNetwork={selectedNetwork}
         selectedVisibilityType={chat.visibility}
         isReadonly={session?.user?.id !== chat.userId}
       />

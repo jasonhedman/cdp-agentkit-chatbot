@@ -1,13 +1,18 @@
 import { openai } from '@ai-sdk/openai';
-import { experimental_wrapLanguageModel as wrapLanguageModel } from 'ai';
+import { anthropic } from '@ai-sdk/anthropic';
 
-import { customMiddleware } from './custom-middleware';
+import { ModelProvider } from './models';
+import { Model } from './models';
 
-export const customModel = (apiIdentifier: string) => {
-  return wrapLanguageModel({
-    model: openai(apiIdentifier),
-    middleware: customMiddleware,
-  });
+export const getModel = (model: Model) => {
+  switch (model.provider) {
+    case ModelProvider.OPENAI:
+      return openai(model.apiIdentifier);
+    case ModelProvider.ANTHROPIC:
+      return anthropic(model.apiIdentifier);
+    default:
+      throw new Error(`Unsupported model provider: ${model.provider}`);
+  }
 };
 
 export const imageGenerationModel = openai.image('dall-e-3');
