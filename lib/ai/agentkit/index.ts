@@ -9,6 +9,7 @@ import {
     basenameActionProvider,
     erc20ActionProvider,
     wethActionProvider,
+    cdpWalletActionProvider,
 } from "@coinbase/agentkit";
 import { createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
@@ -45,6 +46,10 @@ export async function initializeAgent({
         apiKeyName: process.env.CDP_API_KEY_NAME,
         apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
       });
+      const cdpWallet = cdpWalletActionProvider({
+        apiKeyName: process.env.CDP_API_KEY_NAME,
+        apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
+      });
       const erc721 = erc721ActionProvider();
       const erc20 = erc20ActionProvider();
       const pyth = pythActionProvider();
@@ -55,7 +60,7 @@ export async function initializeAgent({
   
       const agentKit = await AgentKit.from({ 
         walletProvider,
-        actionProviders: [cdp, erc721, pyth, wallet, morpho, basename, erc20, weth],
+        actionProviders: [cdp, cdpWallet, erc721, pyth, wallet, morpho, basename, erc20, weth],
       });
   
       const tools = getVercelAITools(agentKit);
