@@ -22,27 +22,9 @@ import {
 } from '@/lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
-import { createDocument } from '@/lib/ai/tools/create-document';
-import { updateDocument } from '@/lib/ai/tools/update-document';
-import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
-import { getWeather } from '@/lib/ai/tools/get-weather';
+import { initializeAgent } from '@/lib/ai/agentkit';
 
 export const maxDuration = 60;
-
-type AllowedTools =
-  | 'createDocument'
-  | 'updateDocument'
-  | 'requestSuggestions'
-  | 'getWeather';
-
-const blocksTools: AllowedTools[] = [
-  'createDocument',
-  'updateDocument',
-  'requestSuggestions',
-];
-
-const weatherTools: AllowedTools[] = ['getWeather'];
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools];
 
 export async function POST(request: Request) {
   const {
@@ -81,6 +63,8 @@ export async function POST(request: Request) {
     messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
   });
 
+  const { tools } = await initializeAgent();
+
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
@@ -88,19 +72,9 @@ export async function POST(request: Request) {
         system: systemPrompt,
         messages,
         maxSteps: 5,
-        experimental_activeTools: allTools,
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
-        tools: {
-          getWeather,
-          createDocument: createDocument({ session, dataStream, model }),
-          updateDocument: updateDocument({ session, dataStream, model }),
-          requestSuggestions: requestSuggestions({
-            session,
-            dataStream,
-            model,
-          }),
-        },
+        tools,
         onFinish: async ({ response }) => {
           if (session.user?.id) {
             try {
