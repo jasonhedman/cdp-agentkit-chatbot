@@ -16,6 +16,7 @@ import { VaultPositions } from './vaults/vault-positions'
 import { getToolInfo } from '@/lib/ai/agentkit/tool-info'
 
 import type { ToolInvocation } from 'ai'
+import { AnimatedShinyText } from '../ui/animated-shiny-text'
 
 interface Props {
     toolInvocation: ToolInvocation
@@ -26,7 +27,8 @@ const getDefaultOpenState = (toolName: string) => {
         'BirdeyeActionProvider_get_trending_tokens',
         'BirdeyeActionProvider_search_tokens',
         'MorphoActionProvider_get_vaults_by_chain',
-        'MorphoActionProvider_get_vaults_by_chain_and_asset'
+        'MorphoActionProvider_get_vaults_by_chain_and_asset',
+        'MorphoActionProvider_get_vault_positions'
     ].includes(toolName);
 }
 
@@ -77,7 +79,7 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
         {toolInfo ? (
             <div className="flex flex-row items-center gap-2">
                 {toolInfo.icon}
-                <p>{toolInfo.loading}</p>
+                <AnimatedShinyText className="text-md">{toolInfo.loading}</AnimatedShinyText>
             </div>
             ) : (
                 <p>{toolName}</p>

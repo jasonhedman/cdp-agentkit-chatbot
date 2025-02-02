@@ -4,14 +4,14 @@ import React from 'react'
 
 import { Card } from '@/components/ui/card'
 
-import { Vault } from '@/agentkit-action-providers/morpho/types'
+import type { Vault } from '@/agentkit-action-providers/morpho/types'
 
 interface Props {
     vault: Vault
 }
 
 export const formatNumber = (num: string) => {
-    return parseFloat(num).toLocaleString(undefined, { 
+    return Number.parseFloat(num).toLocaleString(undefined, { 
         maximumFractionDigits: 2 
     })
 }

@@ -1,6 +1,6 @@
-import { DocumentNode } from '@apollo/client';
+import type { DocumentNode } from '@apollo/client';
 import { morphoClient } from './apollo-client';
-import { VaultsResponse, VaultDataResponse } from '../types';
+import type { VaultsResponse, VaultDataResponse } from '../types';
 
 export const executeUserQuery = async <T extends Record<string, any>, R>(
   query: DocumentNode,

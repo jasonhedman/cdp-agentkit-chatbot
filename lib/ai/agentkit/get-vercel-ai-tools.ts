@@ -2,8 +2,8 @@
  * Main exports for the CDP Vercel AI SDK package
  */
 
-import { z } from "zod";
-import { AgentKit, type Action } from "@coinbase/agentkit";
+import type { z } from "zod";
+import type { AgentKit, Action } from "@coinbase/agentkit";
 import { tool, type ToolSet } from "ai";
 
 /**

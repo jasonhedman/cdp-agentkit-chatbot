@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { VaultPosition } from '@/agentkit-action-providers/morpho/types/vault'
+import type { VaultPosition } from '@/agentkit-action-providers/morpho/types/vault'
 import { formatUnits } from 'viem'
 import { Card } from '@/components/ui/card'
 
@@ -19,10 +19,12 @@ export const VaultPositions: React.FC<Props> = ({ result }) => {
         return <div className="text-neutral-600 dark:text-neutral-400">{body.message}</div>
     }
 
+    console.log(body.data)
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {body.data?.map((position) => (
-                <Card className="flex flex-col gap-2 p-2">
+                <Card className="flex flex-col gap-2 p-2" key={position.vault.address}>
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-row items-center gap-2">

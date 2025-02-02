@@ -1,4 +1,4 @@
-import { base, baseSepolia, mainnet, sepolia, Chain, goerli } from "viem/chains";
+import { base, baseSepolia, mainnet, sepolia, type Chain, goerli } from "viem/chains";
 
 export const SUPPORTED_NETWORKS: Chain[] = [
     baseSepolia,

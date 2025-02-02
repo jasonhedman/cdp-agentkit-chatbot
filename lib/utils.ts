@@ -1,6 +1,5 @@
 import type {
   CoreAssistantMessage,
-  CoreMessage,
   CoreToolMessage,
   Message,
   ToolInvocation,

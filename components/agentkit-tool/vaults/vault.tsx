@@ -3,12 +3,12 @@
 import React from 'react'
 import { AreaChart, Area, CartesianGrid, XAxis } from "recharts"
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TimeseriesData, VaultData } from "@/agentkit-action-providers/morpho/types"
+import type { VaultData } from "@/agentkit-action-providers/morpho/types"
 import { Address } from '@/components/address'
 
 interface Props {
@@ -38,9 +38,9 @@ export const Vault: React.FC<Props> = ({ result }) => {
 
   const chartData = data?.historicalState.apy.map((apyPoint, index) => {
     return {
-      timestamp: new Date(parseInt(apyPoint.x) * 1000).toLocaleDateString(),
-      apy: parseFloat(apyPoint.y) * 100, // Convert to percentage
-      netApy: parseFloat(data.historicalState.netApy[index].y) * 100, // Convert to percentage
+      timestamp: new Date(Number.parseInt(apyPoint.x) * 1000).toLocaleDateString(),
+      apy: Number.parseFloat(apyPoint.y) * 100, // Convert to percentage
+      netApy: Number.parseFloat(data.historicalState.netApy[index].y) * 100, // Convert to percentage
     }
   }).reverse()
 
@@ -49,7 +49,7 @@ export const Vault: React.FC<Props> = ({ result }) => {
   const currentNetApy = chartData[chartData.length - 1].netApy.toFixed(2)
 
   return (
-    <div className="h-full w-full max-w-full space-y-2">
+    <div className="size-full max-w-full space-y-2">
       <div className="flex flex-col space-y-2">
         {/* Header with Asset Logo and Name */}
         <div className="flex items-center gap-2 bg-card p-2 rounded-md">
@@ -69,7 +69,7 @@ export const Vault: React.FC<Props> = ({ result }) => {
           </div>
           <div className="p-2 rounded-md bg-card">
             <div className="text-sm text-muted-foreground">TVL</div>
-            <div className="text-2xl font-bold mt-1">${parseFloat(data.state.totalAssetsUsd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' })}</div>
+            <div className="text-2xl font-bold mt-1">${Number.parseFloat(data.state.totalAssetsUsd).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' })}</div>
           </div>
           <div className="p-2 rounded-md bg-card">
             <div className="text-sm text-muted-foreground">Management Fee</div>
@@ -87,7 +87,7 @@ export const Vault: React.FC<Props> = ({ result }) => {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Token</span>
                   <div className="flex items-center gap-2">
-                    <img src={data.asset.logoURI} alt={data.asset.symbol} className="w-5 h-5 rounded-full" />
+                    <img src={data.asset.logoURI} alt={data.asset.symbol} className="size-5 rounded-full" />
                     <span>{data.asset.symbol}</span>
                   </div>
                 </div>

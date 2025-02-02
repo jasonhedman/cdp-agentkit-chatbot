@@ -72,10 +72,10 @@ export async function POST(request: Request) {
         model: getModel(model),
         system: systemPrompt,
         messages,
-        maxSteps: 5,
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
         tools,
+        maxSteps: 10,
         onFinish: async ({ response }) => {
           if (session.user?.id) {
             try {

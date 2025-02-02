@@ -1,5 +1,5 @@
 import { compare } from 'bcrypt-ts';
-import NextAuth, { type DefaultSession, type User } from 'next-auth';
+import NextAuth, { type DefaultSession, } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import { getUser } from '@/lib/db/queries';

@@ -1,14 +1,14 @@
-import { z } from "zod";
+import type { z } from "zod";
 
 import { base, mainnet } from "viem/chains";
 
 import Decimal from "decimal.js"
 
-import { ActionProvider, morphoActionProvider as baseMorphoActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, type EvmWalletProvider } from "@coinbase/agentkit";
 import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema, GetVaultPositionsSchema } from "./schemas";
 
 import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";
-import { encodeFunctionData, parseEther, parseUnits } from "viem";
+import { encodeFunctionData, parseUnits } from "viem";
 import { METAMORPHO_ABI } from "./constants";
 import { approve } from "./utils";
 import { TimeInterval } from "./types";
@@ -155,7 +155,7 @@ Important notes:
   async deposit(wallet: EvmWalletProvider, args: z.infer<typeof DepositSchema>): Promise<string> {
     const assets = new Decimal(args.assets);
 
-    if (assets.comparedTo(new Decimal(0.0)) != 1) {
+    if (assets.comparedTo(new Decimal(0.0)) !== 1) {
       return "Error: Assets amount must be greater than 0";
     }
 
@@ -313,7 +313,7 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
       }
 
       return JSON.stringify({
-        data: data.userByAddress.vaultPositions,
+        data: data.userByAddress.vaultPositions.filter((position) => BigInt(position.assets) > 0n),
         message: "The user is shown the vault positions in the UI. Do not reiterate the vault positions in your return message."
       });
     } catch (error) {

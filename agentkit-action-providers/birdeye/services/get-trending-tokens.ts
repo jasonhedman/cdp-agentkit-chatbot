@@ -1,6 +1,6 @@
 import { queryBirdeye } from "./base-query";
 
-import { Network, TrendingTokensResponse } from "../types";
+import type { Network, TrendingTokensResponse } from "../types";
 
 export const getTrendingTokens = async ({
     apiKey,

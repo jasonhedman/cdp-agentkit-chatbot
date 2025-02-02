@@ -1,5 +1,5 @@
 import { queryBirdeye } from "./base-query";
-import { Network, TokenOverview } from "../types";
+import type { Network, TokenOverview } from "../types";
 
 export const getTokenOverview = async ({
     address,

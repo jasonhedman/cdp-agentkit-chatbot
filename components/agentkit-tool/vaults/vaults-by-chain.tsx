@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Vault } from '@/agentkit-action-providers/morpho/types/vault'
+import type { Vault } from '@/agentkit-action-providers/morpho/types/vault'
 import VaultCard from './vault-card'
 
 interface Props {

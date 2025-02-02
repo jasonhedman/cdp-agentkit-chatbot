@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 
-import { ModelProvider, Model } from './models';
+import { ModelProvider, type Model } from './models';
 
 export const getModel = (model: Model) => {
   switch (model.provider) {

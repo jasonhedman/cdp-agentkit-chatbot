@@ -15,10 +15,7 @@ import equal from 'fast-deep-equal';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { MessageEditor } from './message-editor';
-import { getToolInfo } from '@/lib/ai/agentkit/tool-info';
-import { ChevronDown } from 'lucide-react';
 import AgentkitTool from './agentkit-tool';
 
 const PurePreviewMessage = ({

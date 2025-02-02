@@ -1,4 +1,4 @@
-import { TimeseriesData } from "./historical-yield";
+import type { TimeseriesData } from "./historical-yield";
 
 export interface Asset {
   id: string;

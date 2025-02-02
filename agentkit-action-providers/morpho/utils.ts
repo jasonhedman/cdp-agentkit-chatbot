@@ -1,5 +1,5 @@
 import { encodeFunctionData } from "viem";
-import { EvmWalletProvider } from "@coinbase/agentkit";
+import type { EvmWalletProvider } from "@coinbase/agentkit";
 
 const ERC20_ABI = [
   {

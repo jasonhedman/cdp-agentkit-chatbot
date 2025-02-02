@@ -1,5 +1,5 @@
-import { BaseResponse } from "../types";
-import { Network } from "../types/networks";
+import type { BaseResponse } from "../types";
+import type { Network } from "../types/networks";
 
 export const queryBirdeye = async <T>({
   endpoint,

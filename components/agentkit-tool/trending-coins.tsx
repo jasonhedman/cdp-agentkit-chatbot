@@ -4,7 +4,7 @@ import React from 'react'
 
 import { Card } from '@/components/ui/card'
 
-import { TrendingToken } from '@/agentkit-action-providers/birdeye/types'
+import type { TrendingToken } from '@/agentkit-action-providers/birdeye/types'
 
 interface Props {
     result: string
@@ -43,7 +43,7 @@ const TokenCard = ({ token }: { token: TrendingToken }) => {
                             className="size-10 rounded-full"
                         />
                     ) : (
-                        <div className="size-10 rounded-full bg-muted-foreground opacity-50"></div>
+                        <div className="size-10 rounded-full bg-muted-foreground opacity-50" />
                     )
                 }
                 <div className="flex flex-col">

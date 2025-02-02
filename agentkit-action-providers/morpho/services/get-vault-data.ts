@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { executeVaultDataQuery } from './base-query';
 import { VAULT_FIELDS_FRAGMENT } from './vault-fragments';
 
-import { TimeseriesOptions, VaultDataResponse } from '../types';
+import type { TimeseriesOptions, VaultDataResponse } from '../types';
 
 const GET_VAULT_DATA_QUERY = gql`
   ${VAULT_FIELDS_FRAGMENT}
