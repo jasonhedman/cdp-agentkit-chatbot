@@ -8,7 +8,7 @@ import { ActionProvider, morphoActionProvider as baseMorphoActionProvider, Creat
 import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema } from "./schemas";
 
 import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";
-import { encodeFunctionData, parseEther } from "viem";
+import { encodeFunctionData, parseEther, parseUnits } from "viem";
 import { METAMORPHO_ABI } from "./constants";
 import { approve } from "./utils";
 import { TimeInterval } from "./types";
@@ -39,7 +39,7 @@ export class MorphoActionProvider extends ActionProvider {
    * Constructor for the BirdeyeActionProvider class.
    */
   constructor() {
-    super("morpho-extended", [baseMorphoActionProvider()]);
+    super("morpho-extended", []);
   }
 
   supportsNetwork(network: Network): boolean {
@@ -143,7 +143,6 @@ It takes:
   - 1 WETH
   - 0.1 WETH
   - 0.01 WETH
-- receiver: The address to receive the shares
 - tokenAddress: The address of the token to approve
 
 Important notes:
@@ -159,8 +158,27 @@ Important notes:
       return "Error: Assets amount must be greater than 0";
     }
 
+    // Get token decimals
+    const decimals = await wallet.readContract({
+      address: args.tokenAddress as `0x${string}`,
+      abi: [
+        {
+          inputs: [],
+          name: "decimals",
+          outputs: [{ type: "uint8", name: "" }],
+          stateMutability: "view",
+          type: "function"
+        }
+      ],
+      functionName: "decimals"
+    });
+
+    if (!decimals) {
+      return "Error: Could not get token decimals";
+    }
+
     try {
-      const atomicAssets = parseEther(args.assets);
+      const atomicAssets = parseUnits(args.assets, decimals as number);
 
       const approvalResult = await approve(
         wallet,
@@ -172,20 +190,28 @@ Important notes:
         return `Error approving Morpho Vault as spender: ${approvalResult}`;
       }
 
+      console.log(approvalResult);
+
       const data = encodeFunctionData({
         abi: METAMORPHO_ABI,
         functionName: "deposit",
-        args: [atomicAssets, wallet.getAddress()],
+        args: [atomicAssets.toString(), wallet.getAddress()],
       });
+
+      console.log(data);
 
       const txHash = await wallet.sendTransaction({
         to: args.vaultAddress as `0x${string}`,
         data,
       });
 
+      console.log(txHash);
+
       const receipt = await wallet.waitForTransactionReceipt(txHash);
 
-      return `Deposited ${args.assets} to Morpho Vault ${args.vaultAddress} with transaction hash: ${txHash}\nTransaction receipt: ${JSON.stringify(receipt)}`;
+      console.log(receipt);
+
+      return `Deposited ${args.assets} to Morpho Vault ${args.vaultAddress} with transaction hash: ${txHash}`;
     } catch (error) {
       return `Error depositing to Morpho Vault: ${error}`;
     }
@@ -205,7 +231,6 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
 
 - vaultAddress: The address of the Morpho Vault to withdraw from
 - assets: The amount of assets to withdraw in atomic units (wei)
-- receiver: The address to receive the shares
 `,
     schema: WithdrawSchema,
   })

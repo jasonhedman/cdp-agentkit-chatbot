@@ -94,8 +94,8 @@ const toolInfo = {
 
     // Morpho
     "MorphoActionProvider_deposit": {
-        loading: "Getting Morpho details...",
-        title: "Fetched Morpho details",
+        loading: "Depositing to Morpho...",
+        title: "Deposited to Morpho",
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
     "MorphoActionProvider_withdraw": {

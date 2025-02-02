@@ -43,7 +43,7 @@ export async function approve(
 
     await wallet.waitForTransactionReceipt(txHash);
 
-    return `Successfully approved ${spenderAddress} to spend ${amount} tokens`;
+    return `Successfully approved ${spenderAddress} to spend ${amount.toString()} tokens`;
   } catch (error) {
     return `Error approving tokens: ${error}`;
   }
