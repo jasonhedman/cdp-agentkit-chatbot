@@ -1,5 +1,5 @@
 <h1>
-  Open AgentKit
+  Coinbase AgentKit Chatbot
 </h1>
 <p>
   An open-source implementation of Coinbase AgentKit in a Next.js web app.
