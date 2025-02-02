@@ -5,8 +5,6 @@
   An open-source implementation of Coinbase AgentKit in a Next.js web app.
 </p>
 
-<br/>
-
 ## Features
 
 - [Coinbase AgentKit]()
