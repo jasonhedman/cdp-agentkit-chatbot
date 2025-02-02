@@ -7,7 +7,7 @@
 
 ## Features
 
-- [Coinbase AgentKit]()
+- [Coinbase AgentKit](https://github.com/coinbase/agentkit)
   - 20+ supported on-chain actions
   - Query and deposit into Morpho Vaults
   - Find token data from Birdeye
