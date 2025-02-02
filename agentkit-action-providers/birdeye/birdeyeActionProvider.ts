@@ -137,6 +137,44 @@ After fetching the tokens, do not reiterate the tokens in your next message unle
       });
     }
   }
+
+  @CreateAction({
+    name: "get_token_address",
+    description: `This tool will get the token address. It takes:
+
+    - keyword: The keyword to search for which can be a name or symbol
+    `,
+    schema: SearchTokensSchema,
+  })
+  async getTokenAddress(wallet: EvmWalletProvider, args: z.infer<typeof SearchTokensSchema>): Promise<string> {
+    try {
+      const network = wallet.getNetwork();
+      if (!network || !network.chainId) {
+        throw new Error("Network is required");
+      }
+
+      const birdeyeNetwork = chainIdToNetwork(network.chainId);
+      if (!birdeyeNetwork) {
+        throw new Error("Network is not supported");
+      }
+
+      const { items } = await searchTokens({
+        keyword: args.search,
+        network: birdeyeNetwork,
+        apiKey: this.birdeyeApiKey
+      });
+
+      const token = items?.[0]?.result?.[0];
+
+      if(!token) {
+        return `No token found for ${args.search}`;
+      }
+
+      return token.address;
+    } catch (error) {
+      return `Error fetching token address: ${error}`;
+    }
+  }
 }
 
 export const birdeyeActionProvider = (apiKey: string) => new BirdeyeActionProvider(apiKey);

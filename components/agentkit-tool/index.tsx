@@ -10,6 +10,7 @@ import { Markdown } from '@/components/markdown'
 
 import TrendingTokens from './trending-coins'
 import SearchTokensResult from './search-tokens'
+import { VaultsByChain, VaultsByChainAndAsset} from './vaults'
 
 import { getToolInfo } from '@/lib/ai/agentkit/tool-info'
 
@@ -22,7 +23,9 @@ interface Props {
 const getDefaultOpenState = (toolName: string) => {
     return [
         'BirdeyeActionProvider_get_trending_tokens',
-        'BirdeyeActionProvider_search_tokens'
+        'BirdeyeActionProvider_search_tokens',
+        'MorphoActionProvider_get_vaults_by_chain',
+        'MorphoActionProvider_get_vaults_by_chain_and_asset'
     ].includes(toolName);
 }
 
@@ -43,12 +46,16 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
                 <ChevronDown className="size-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />                
             </CollapsibleTrigger>
             <CollapsibleContent>
-                <div className="rounded-md bg-neutral-100 p-2">
+                <div className="rounded-md bg-neutral-100 dark:bg-neutral-800 p-2">
                     {
                         toolName === 'BirdeyeActionProvider_get_trending_tokens' ? (
                             <TrendingTokens result={result} />
                         ) : toolName === 'BirdeyeActionProvider_search_tokens' ? (
                             <SearchTokensResult result={result} />
+                        ) : toolName === 'MorphoActionProvider_get_vaults_by_chain' ? (
+                            <VaultsByChain result={result} />
+                        ) : toolName === 'MorphoActionProvider_get_vaults_by_chain_and_asset' ? (
+                            <VaultsByChainAndAsset result={result} />
                         ) : (
                             <Markdown>{result}</Markdown>
                         )

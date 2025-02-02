@@ -5,7 +5,6 @@ import {
     erc721ActionProvider, 
     pythActionProvider, 
     walletActionProvider,
-    morphoActionProvider,
     basenameActionProvider,
     erc20ActionProvider,
     wethActionProvider,
@@ -14,9 +13,11 @@ import {
 import { createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
+import { birdeyeActionProvider } from "@/agentkit-action-providers/birdeye/birdeyeActionProvider";
+import { morphoActionProvider } from "@/agentkit-action-providers/morpho/morphoActionProvider";
+
 import { getVercelAITools } from "./get-vercel-ai-tools";
 import { DEFAULT_NETWORK, SUPPORTED_NETWORKS } from "../../networks";
-import { birdeyeActionProvider } from "@/agentkit-action-providers/birdeye/birdeyeActionProvider";
 
 /**
  * Initialize the agent with CDP Agentkit and Vercel AI SDK tools

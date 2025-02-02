@@ -103,6 +103,16 @@ const toolInfo = {
         title: "Withdrew from Morpho",
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
+    "MorphoActionProvider_get_vaults_by_chain": {
+        loading: "Getting Morpho vaults...",
+        title: "Fetched Morpho vaults",
+        icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
+    },
+    "MorphoActionProvider_get_vaults_by_chain_and_asset": {
+        loading: "Getting Morpho vaults...",
+        title: "Fetched Morpho vaults",
+        icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
+    },
 
     // Weth
     "WethActionProvider_wrap_eth": {
@@ -120,6 +130,11 @@ const toolInfo = {
     "BirdeyeActionProvider_search_tokens": {
         loading: "Searching tokens...",
         title: "Searched tokens",
+        icon: <Image src="/images/birdeye.png" alt="Birdeye" {...imageProps} />,
+    },
+    "BirdeyeActionProvider_get_token_address": {
+        loading: "Getting token address...",
+        title: "Fetched token address",
         icon: <Image src="/images/birdeye.png" alt="Birdeye" {...imageProps} />,
     },
 } as const;
