@@ -4,7 +4,7 @@ import { base, mainnet } from "viem/chains";
 
 import Decimal from "decimal.js"
 
-import { ActionProvider, CreateAction, type EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
 import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema, GetVaultPositionsSchema } from "./schemas";
 
 import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";

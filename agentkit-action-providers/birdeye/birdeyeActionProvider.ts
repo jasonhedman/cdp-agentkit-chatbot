@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-import { ActionProvider, CreateAction, type EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
 import { GetTrendingTokensSchema, SearchTokensSchema } from "./schemas";
 import { getTrendingTokens, searchTokens } from "./services";
 import { chainIdToNetwork } from "./utils";

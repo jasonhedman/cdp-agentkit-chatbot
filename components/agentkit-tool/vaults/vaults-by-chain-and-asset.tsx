@@ -9,22 +9,22 @@ interface Props {
 }
 
 export const VaultsByChainAndAsset: React.FC<Props> = ({ result }) => {
-    const body = JSON.parse(result) as {
+    const { vaults, message } = JSON.parse(result) as {
         vaults: Vault[],
         message: string
     }
 
-    if (body.vaults.length === 0) {
+    if (vaults.length === 0) {
         return (
             <div className="text-neutral-600 dark:text-neutral-400">
-                No vaults found for this asset on the current chain.
+               {message}
             </div>
         )
     }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {body.vaults.map((vault: Vault) => (
+            {vaults.map((vault: Vault) => (
                 <VaultCard
                     key={vault.address} 
                     vault={vault} 
