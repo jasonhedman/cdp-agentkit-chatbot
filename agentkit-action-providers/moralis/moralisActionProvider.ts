@@ -1,7 +1,7 @@
 import type { z } from "zod";
 import Moralis from 'moralis';
 
-import { ActionProvider, CreateAction, type EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
 import { GetTokenBalancesSchema } from "./schemas";
 
 export interface Network {
@@ -56,6 +56,8 @@ export class MoralisActionProvider extends ActionProvider {
     try {
       await Moralis.start({
         apiKey: this.moralisApiKey
+      }).catch(error => {
+        console.log(error);
       });
 
       const response = await Moralis.EvmApi.wallets.getWalletTokenBalancesPrice({
@@ -65,9 +67,10 @@ export class MoralisActionProvider extends ActionProvider {
 
       return JSON.stringify({
         tokens: response.result.filter(token => token.usdValue !== null),
-        message: "The user is shown the tokens in the UI. Do not reiterate the tokens in your return message."
+        message: "The user is shown the tokens in the UI. DO NOT reiterate the tokens in your return message. Ask the user what they want to do next."
       });
     } catch (error) {
+      console.log(error);
       return `Error fetching trending tokens: ${error}`;
     }
   }
