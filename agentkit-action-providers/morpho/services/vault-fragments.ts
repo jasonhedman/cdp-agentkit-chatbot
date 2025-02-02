@@ -34,4 +34,4 @@ export const VAULT_FIELDS_FRAGMENT = gql`
       description
     }
   }
-`; 
+`;

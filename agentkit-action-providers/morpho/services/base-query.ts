@@ -2,6 +2,23 @@ import { DocumentNode } from '@apollo/client';
 import { morphoClient } from './apollo-client';
 import { VaultsResponse, VaultDataResponse } from '../types';
 
+export const executeUserQuery = async <T extends Record<string, any>, R>(
+  query: DocumentNode,
+  variables: T
+): Promise<R> => {
+  try {
+    const { data } = await morphoClient.query<R>({
+      query,
+      variables,
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+};
+
 export const executeVaultQuery = async <T extends Record<string, any>>(
   query: DocumentNode,
   variables: T

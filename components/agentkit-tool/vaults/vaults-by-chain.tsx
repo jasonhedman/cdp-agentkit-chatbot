@@ -10,8 +10,12 @@ interface Props {
 
 export const VaultsByChain: React.FC<Props> = ({ result }) => {
     const body = JSON.parse(result) as {
-        vaults: Vault[],
+        vaults: Vault[] | null,
         message: string
+    }
+
+    if (!body.vaults) {
+        return <div className="text-neutral-600 dark:text-neutral-400">{body.message}</div>
     }
 
     return (

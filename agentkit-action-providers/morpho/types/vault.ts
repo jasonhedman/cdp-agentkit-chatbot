@@ -56,3 +56,15 @@ export interface VaultData extends Vault {
 export interface VaultDataResponse {
     vaultByAddress: VaultData
 }
+
+export interface VaultPosition {
+  vault: Vault;
+  assets: string;
+}
+
+export interface UserVaultPositions {
+  userByAddress: {
+    address: string;
+    vaultPositions: VaultPosition[];
+  };
+}

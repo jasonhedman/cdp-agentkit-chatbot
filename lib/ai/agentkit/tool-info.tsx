@@ -118,6 +118,11 @@ const toolInfo = {
         title: "Fetched Morpho Vault Data",
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
+    "MorphoActionProvider_get_vault_positions": {
+        loading: "Getting Morpho Vault Positions...",
+        title: "Fetched Morpho Vault Positions",
+        icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
+    },
 
     // Weth
     "WethActionProvider_wrap_eth": {

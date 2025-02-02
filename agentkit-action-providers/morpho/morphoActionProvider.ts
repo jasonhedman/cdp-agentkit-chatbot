@@ -5,13 +5,14 @@ import { base, mainnet } from "viem/chains";
 import Decimal from "decimal.js"
 
 import { ActionProvider, morphoActionProvider as baseMorphoActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
-import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema } from "./schemas";
+import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema, GetVaultPositionsSchema } from "./schemas";
 
 import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";
 import { encodeFunctionData, parseEther, parseUnits } from "viem";
 import { METAMORPHO_ABI } from "./constants";
 import { approve } from "./utils";
 import { TimeInterval } from "./types";
+import { getVaultPositions } from "./services/get-vault-positions";
 
 export interface Network {
   /**
@@ -190,26 +191,18 @@ Important notes:
         return `Error approving Morpho Vault as spender: ${approvalResult}`;
       }
 
-      console.log(approvalResult);
-
       const data = encodeFunctionData({
         abi: METAMORPHO_ABI,
         functionName: "deposit",
         args: [atomicAssets.toString(), wallet.getAddress()],
       });
 
-      console.log(data);
-
       const txHash = await wallet.sendTransaction({
         to: args.vaultAddress as `0x${string}`,
         data,
       });
 
-      console.log(txHash);
-
-      const receipt = await wallet.waitForTransactionReceipt(txHash);
-
-      console.log(receipt);
+      await wallet.waitForTransactionReceipt(txHash);
 
       return `Deposited ${args.assets} to Morpho Vault ${args.vaultAddress} with transaction hash: ${txHash}`;
     } catch (error) {
@@ -240,20 +233,34 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
     }
 
     try {
+      console.log(args)
+
+      // const approvalResult = await approve(
+      //   wallet,
+      //   args.vaultAddress,
+      //   args.vaultAddress,
+      //   BigInt(args.assets),
+      // );
+      // if (approvalResult.startsWith("Error")) {
+      //   return `Error approving Morpho Vault as spender: ${approvalResult}`;
+      // }
+
       const data = encodeFunctionData({
         abi: METAMORPHO_ABI,
         functionName: "withdraw",
-        args: [BigInt(args.assets), wallet.getAddress(), wallet.getAddress()],
+        args: [BigInt(args.assets).toString(), wallet.getAddress(), wallet.getAddress()],
       });
 
       const txHash = await wallet.sendTransaction({
         to: args.vaultAddress as `0x${string}`,
         data,
+      }).catch((error) => {
+        console.log(error)
       });
 
-      const receipt = await wallet.waitForTransactionReceipt(txHash);
+      await wallet.waitForTransactionReceipt(txHash as `0x${string}`);
 
-      return `Withdrawn ${args.assets} from Morpho Vault ${args.vaultAddress} with transaction hash: ${txHash}\nTransaction receipt: ${JSON.stringify(receipt)}`;
+      return `Withdrawn ${args.assets} from Morpho Vault ${args.vaultAddress} with transaction hash: ${txHash}`;
     } catch (error) {
       return `Error withdrawing from Morpho Vault: ${error}`;
     }
@@ -263,8 +270,7 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
     name: "get_vault_data",
     description: `This tool will get the data of a Morpho Vault. It takes:
 
-    - vaultAddress: The address of the Morpho Vault to get the data for
-    `,
+    - vaultAddress: The address of the Morpho Vault to get the data for`,
     schema: GetVaultDataSchema,
   })
   async getVaultData(wallet: EvmWalletProvider, args: z.infer<typeof GetVaultDataSchema>): Promise<string> {
@@ -276,11 +282,43 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
       });
       return JSON.stringify({
         data: vaultData.vaultByAddress,
-        message: "The user is shown the historical yield in the UI."
+        message: "The user is shown the vault data in the UI."
       });
     } catch (error) {
       return JSON.stringify({
-        message: `Error fetching historical yield: ${error}`,
+        message: `Error fetching vault data: ${error}`,
+        data: null
+      });
+    }
+  }
+
+  @CreateAction({
+    name: "get_vault_positions",
+    description: "Get all vault positions for the current wallet on Morpho Blue",
+    schema: GetVaultPositionsSchema,
+  })
+  async getVaultPositions(wallet: EvmWalletProvider, args: z.infer<typeof GetVaultPositionsSchema>): Promise<string> {
+    try {
+      const address = wallet.getAddress();
+      const chainId = Number(wallet.getNetwork().chainId);
+
+      if (!address || !chainId) {
+        return "Error: Wallet address or chain ID is not available";
+      }
+    
+      const data = await getVaultPositions(chainId, address);
+    
+      if (!data.userByAddress.vaultPositions.length) {
+        return "You don't have any vault positions on Morpho Blue.";
+      }
+
+      return JSON.stringify({
+        data: data.userByAddress.vaultPositions,
+        message: "The user is shown the vault positions in the UI. Do not reiterate the vault positions in your return message."
+      });
+    } catch (error) {
+      return JSON.stringify({
+        message: `Error fetching vault positions: ${error}`,
         data: null
       });
     }

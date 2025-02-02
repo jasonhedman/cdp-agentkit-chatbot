@@ -16,7 +16,7 @@ export const VaultsByChainAndAsset: React.FC<Props> = ({ result }) => {
 
     if (body.vaults.length === 0) {
         return (
-            <div className="text-center text-muted-foreground">
+            <div className="text-neutral-600 dark:text-neutral-400">
                 No vaults found for this asset on the current chain.
             </div>
         )

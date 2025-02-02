@@ -64,3 +64,7 @@ export const GetVaultDataSchema = z
       .describe("The address of the Morpho Vault to get the historical yield for"),
   })
   .describe("Input schema for Morpho Vault historical yield action");
+
+export const GetVaultPositionsSchema = z
+  .object({})
+  .describe("Input schema for Morpho Vault positions action");

@@ -11,6 +11,7 @@ import { Markdown } from '@/components/markdown'
 import TrendingTokens from './trending-coins'
 import SearchTokensResult from './search-tokens'
 import { VaultsByChain, VaultsByChainAndAsset, Vault } from './vaults'
+import { VaultPositions } from './vaults/vault-positions'
 
 import { getToolInfo } from '@/lib/ai/agentkit/tool-info'
 
@@ -58,6 +59,8 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
                             <VaultsByChainAndAsset result={result} />
                         ) : toolName === 'MorphoActionProvider_get_vault_data' ? (
                             <Vault result={result} />
+                        ) : toolName === 'MorphoActionProvider_get_vault_positions' ? (
+                            <VaultPositions result={result} />
                         ) : (
                             <Markdown>{result}</Markdown>
                         )
