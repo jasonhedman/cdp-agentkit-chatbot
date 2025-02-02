@@ -5,12 +5,13 @@ import { base, mainnet } from "viem/chains";
 import Decimal from "decimal.js"
 
 import { ActionProvider, morphoActionProvider as baseMorphoActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
-import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema } from "./schemas";
+import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema } from "./schemas";
 
-import { searchVaultsByChain, searchVaultsByChainAndAsset } from "./services";
+import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";
 import { encodeFunctionData, parseEther } from "viem";
 import { METAMORPHO_ABI } from "./constants";
 import { approve } from "./utils";
+import { TimeInterval } from "./types";
 
 export interface Network {
   /**
@@ -232,7 +233,33 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
       return `Error withdrawing from Morpho Vault: ${error}`;
     }
   }
-  
+
+  @CreateAction({
+    name: "get_vault_data",
+    description: `This tool will get the data of a Morpho Vault. It takes:
+
+    - vaultAddress: The address of the Morpho Vault to get the data for
+    `,
+    schema: GetVaultDataSchema,
+  })
+  async getVaultData(wallet: EvmWalletProvider, args: z.infer<typeof GetVaultDataSchema>): Promise<string> {
+    try {
+      const vaultData = await getVaultDataService(args.vaultAddress, Number(wallet.getNetwork().chainId), {
+        startTimestamp: Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60),
+        endTimestamp: Math.floor(Date.now() / 1000),
+        interval: TimeInterval.HOUR,
+      });
+      return JSON.stringify({
+        data: vaultData.vaultByAddress,
+        message: "The user is shown the historical yield in the UI."
+      });
+    } catch (error) {
+      return JSON.stringify({
+        message: `Error fetching historical yield: ${error}`,
+        data: null
+      });
+    }
+  }
 }
 
 export const morphoActionProvider = () => new MorphoActionProvider();

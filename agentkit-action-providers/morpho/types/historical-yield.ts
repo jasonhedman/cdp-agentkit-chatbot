@@ -15,13 +15,3 @@ export interface TimeseriesData {
     x: string; // timestamp
     y: string; // APY value
 }
-  
-export interface VaultHistoricalYield {
-    weeklyHourlyMarketApys: {
-        uniqueKey: string;
-        historicalState: {
-            supplyApy: TimeseriesData[];
-            borrowApy: TimeseriesData[];
-        };
-    };
-}

@@ -104,13 +104,18 @@ const toolInfo = {
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
     "MorphoActionProvider_get_vaults_by_chain": {
-        loading: "Getting Morpho vaults...",
-        title: "Fetched Morpho vaults",
+        loading: "Getting Morpho Vaults...",
+        title: "Fetched Morpho Vaults",
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
     "MorphoActionProvider_get_vaults_by_chain_and_asset": {
-        loading: "Getting Morpho vaults...",
-        title: "Fetched Morpho vaults",
+        loading: "Getting Morpho Vaults...",
+        title: "Fetched Morpho Vaults",
+        icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
+    },
+    "MorphoActionProvider_get_vault_data": {
+        loading: "Getting Morpho Vault Data...",
+        title: "Fetched Morpho Vault Data",
         icon: <Image src="/images/morpho.png" alt="Morpho" {...imageProps} />,
     },
 

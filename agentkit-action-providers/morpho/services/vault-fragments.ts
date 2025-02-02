@@ -14,6 +14,7 @@ export const VAULT_FIELDS_FRAGMENT = gql`
       address
       decimals
       symbol
+      logoURI
     }
     chain {
       id
@@ -27,6 +28,10 @@ export const VAULT_FIELDS_FRAGMENT = gql`
       totalAssetsUsd
       fee
       timelock
+    }
+    metadata {
+      image
+      description
     }
   }
 `; 

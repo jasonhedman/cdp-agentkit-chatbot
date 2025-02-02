@@ -1,8 +1,11 @@
+import { TimeseriesData } from "./historical-yield";
+
 export interface Asset {
   id: string;
   address: string;
   decimals: number;
   symbol: string;
+  logoURI: string;
 }
 
 export interface Chain {
@@ -31,6 +34,10 @@ export interface Vault {
   asset: Asset;
   chain: Chain;
   state: VaultState;
+  metadata: {
+    image: string;
+    description: string;
+  };
 }
 
 export interface VaultsResponse {
@@ -38,3 +45,14 @@ export interface VaultsResponse {
     items: Vault[];
   };
 } 
+
+export interface VaultData extends Vault {
+  historicalState: {
+    apy: TimeseriesData[];
+    netApy: TimeseriesData[];
+  };
+}
+
+export interface VaultDataResponse {
+    vaultByAddress: VaultData
+}

@@ -56,6 +56,11 @@ export const WithdrawSchema = z
   .strip()
   .describe("Input schema for Morpho Vault withdraw action");
 
-export const GetVaultHistoricalYieldSchema = z
-  .object({})
+export const GetVaultDataSchema = z
+  .object({
+    vaultAddress: z
+      .string()
+      .regex(/^0x[a-fA-F0-9]{40}$/, "Invalid Ethereum address format")
+      .describe("The address of the Morpho Vault to get the historical yield for"),
+  })
   .describe("Input schema for Morpho Vault historical yield action");

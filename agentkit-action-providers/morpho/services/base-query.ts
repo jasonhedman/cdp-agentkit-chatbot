@@ -1,6 +1,6 @@
 import { DocumentNode } from '@apollo/client';
 import { morphoClient } from './apollo-client';
-import { VaultsResponse, VaultHistoricalYield } from '../types';
+import { VaultsResponse, VaultDataResponse } from '../types';
 
 export const executeVaultQuery = async <T extends Record<string, any>>(
   query: DocumentNode,
@@ -19,19 +19,19 @@ export const executeVaultQuery = async <T extends Record<string, any>>(
   }
 };
 
-export const executeHistoricalYieldQuery = async <T extends Record<string, any>>(
+export const executeVaultDataQuery = async <T extends Record<string, any>>(
   query: DocumentNode,
   variables: T
 ) => {
   try {
-    const { data } = await morphoClient.query<VaultHistoricalYield>({
+    const { data } = await morphoClient.query<VaultDataResponse>({
       query,
       variables,
     });
 
     return data;
   } catch (error) {
-    console.error('Error fetching historical yield:', error);
+    console.error('Error fetching vault data:', error);
     throw error;
   }
 }; 

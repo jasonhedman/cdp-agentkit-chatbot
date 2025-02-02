@@ -21,8 +21,11 @@ const VaultCard: React.FC<Props> = ({ vault }) => {
         <Card className="flex flex-col gap-2 p-4">
             <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-bold truncate">{vault.name}</h3>
-                    <span className="text-sm text-muted-foreground whitespace-nowrap">{vault.symbol}</span>
+                    <div className="flex flex-row items-center gap-2">
+                        <img src={vault.metadata.image} alt={vault.name} className="size-6 rounded-full" />
+                        <h3 className="text-lg font-bold truncate">{vault.name}</h3>
+                        <span className="text-sm text-muted-foreground whitespace-nowrap">{vault.symbol}</span>
+                    </div>
                 </div>
                 <div className="flex flex-col gap-1">
                     <div className="flex justify-between">
