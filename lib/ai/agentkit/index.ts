@@ -18,6 +18,7 @@ import { morphoActionProvider } from "@/agentkit-action-providers/morpho/morphoA
 
 import { getVercelAITools } from "./get-vercel-ai-tools";
 import { DEFAULT_NETWORK, SUPPORTED_NETWORKS } from "../../networks";
+import { moralisActionProvider } from "@/agentkit-action-providers/moralis";
 
 /**
  * Initialize the agent with CDP Agentkit and Vercel AI SDK tools
@@ -62,6 +63,7 @@ export async function initializeAgent({
           erc20ActionProvider(),
           wethActionProvider(),
           ...(process.env.BIRDEYE_API_KEY ? [birdeyeActionProvider(process.env.BIRDEYE_API_KEY)] : []),
+          ...(process.env.MORALIS_API_KEY ? [moralisActionProvider(process.env.MORALIS_API_KEY)] : []),
         ],
       });
   

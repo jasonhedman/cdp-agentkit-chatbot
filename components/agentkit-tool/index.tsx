@@ -17,6 +17,7 @@ import { getToolInfo } from '@/lib/ai/agentkit/tool-info'
 
 import type { ToolInvocation } from 'ai'
 import { AnimatedShinyText } from '../ui/animated-shiny-text'
+import Balances from './balances'
 
 interface Props {
     toolInvocation: ToolInvocation
@@ -24,11 +25,11 @@ interface Props {
 
 const getDefaultOpenState = (toolName: string) => {
     return [
-        'BirdeyeActionProvider_get_trending_tokens',
-        'BirdeyeActionProvider_search_tokens',
-        'MorphoActionProvider_get_vaults_by_chain',
-        'MorphoActionProvider_get_vaults_by_chain_and_asset',
-        'MorphoActionProvider_get_vault_positions'
+        'get_trending_tokens',
+        'search_tokens',
+        'get_vaults_by_chain',
+        'get_vaults_by_chain_and_asset',
+        'get_vault_positions'
     ].includes(toolName);
 }
 
@@ -36,7 +37,9 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
 
     const { toolName, toolCallId, state } = toolInvocation;
 
-    const toolInfo = getToolInfo(toolName);
+    const parsedToolName = toolName.slice(toolName.indexOf('_') + 1);
+
+    const toolInfo = getToolInfo(parsedToolName);
 
     if (state === 'result') {
     const { result } = toolInvocation;
@@ -51,18 +54,20 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
             <CollapsibleContent>
                 <div className="rounded-md pl-6">
                     {
-                        toolName === 'BirdeyeActionProvider_get_trending_tokens' ? (
+                        parsedToolName === 'get_trending_tokens' ? (
                             <TrendingTokens result={result} />
-                        ) : toolName === 'BirdeyeActionProvider_search_tokens' ? (
+                        ) : parsedToolName === 'search_tokens' ? (
                             <SearchTokensResult result={result} />
-                        ) : toolName === 'MorphoActionProvider_get_vaults_by_chain' ? (
+                        ) : parsedToolName === 'get_vaults_by_chain' ? (
                             <VaultsByChain result={result} />
-                        ) : toolName === 'MorphoActionProvider_get_vaults_by_chain_and_asset' ? (
+                        ) : parsedToolName === 'get_vaults_by_chain_and_asset' ? (
                             <VaultsByChainAndAsset result={result} />
-                        ) : toolName === 'MorphoActionProvider_get_vault_data' ? (
+                        ) : parsedToolName === 'get_vault_data' ? (
                             <Vault result={result} />
-                        ) : toolName === 'MorphoActionProvider_get_vault_positions' ? (
+                        ) : parsedToolName === 'get_vault_positions' ? (
                             <VaultPositions result={result} />
+                        ) : parsedToolName === 'get_token_balances' ? (
+                            <Balances result={result} />
                         ) : (
                             <Markdown>{result}</Markdown>
                         )

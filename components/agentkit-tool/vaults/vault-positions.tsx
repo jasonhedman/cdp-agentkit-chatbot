@@ -19,8 +19,6 @@ export const VaultPositions: React.FC<Props> = ({ result }) => {
         return <div className="text-neutral-600 dark:text-neutral-400">{body.message}</div>
     }
 
-    console.log(body.data)
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {body.data?.map((position) => (

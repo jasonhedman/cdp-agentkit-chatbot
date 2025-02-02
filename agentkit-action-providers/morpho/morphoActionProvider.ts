@@ -4,7 +4,7 @@ import { base, mainnet } from "viem/chains";
 
 import Decimal from "decimal.js"
 
-import { ActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, type EvmWalletProvider } from "@coinbase/agentkit";
 import { GetVaultsByChainSchema, GetVaultsByChainAndAssetSchema, DepositSchema, WithdrawSchema, GetVaultDataSchema, GetVaultPositionsSchema } from "./schemas";
 
 import { searchVaultsByChain, searchVaultsByChainAndAsset, getVaultData as getVaultDataService } from "./services";
@@ -233,17 +233,6 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
     }
 
     try {
-      console.log(args)
-
-      // const approvalResult = await approve(
-      //   wallet,
-      //   args.vaultAddress,
-      //   args.vaultAddress,
-      //   BigInt(args.assets),
-      // );
-      // if (approvalResult.startsWith("Error")) {
-      //   return `Error approving Morpho Vault as spender: ${approvalResult}`;
-      // }
 
       const data = encodeFunctionData({
         abi: METAMORPHO_ABI,
@@ -254,9 +243,7 @@ This tool allows withdrawing assets from a Morpho Vault. It takes:
       const txHash = await wallet.sendTransaction({
         to: args.vaultAddress as `0x${string}`,
         data,
-      }).catch((error) => {
-        console.log(error)
-      });
+      })
 
       await wallet.waitForTransactionReceipt(txHash as `0x${string}`);
 
