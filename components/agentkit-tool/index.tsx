@@ -29,7 +29,9 @@ const getDefaultOpenState = (toolName: string) => {
         'search_tokens',
         'get_vaults_by_chain',
         'get_vaults_by_chain_and_asset',
-        'get_vault_positions'
+        'get_vault_positions',
+        'get_vault_data',
+        'get_token_balances'
     ].includes(toolName);
 }
 
@@ -45,7 +47,7 @@ const AgentkitTool: React.FC<Props> = ({ toolInvocation }) => {
     const { result } = toolInvocation;
 
     return (
-        <Collapsible key={toolCallId} defaultOpen={getDefaultOpenState(toolName)} className="flex flex-col gap-2">
+        <Collapsible key={toolCallId} defaultOpen={getDefaultOpenState(parsedToolName)} className="flex flex-col gap-2">
             <CollapsibleTrigger className="flex flex-row items-center gap-2">
                 {toolInfo?.icon}
                 <p>{toolInfo?.title || toolName}</p>
