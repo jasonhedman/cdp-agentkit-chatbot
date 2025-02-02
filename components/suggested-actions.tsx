@@ -16,24 +16,24 @@ interface SuggestedActionsProps {
 function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
   const suggestedActions = [
     {
-      title: 'Fund yourself',
-      label: 'with the testnet faucet',
-      action: 'Fund yourself with the testnet faucet',
+      title: 'Get Trending Tokens',
+      label: 'from Birdeye',
+      action: 'Get Trending Tokens from Birdeye',
     },
     {
-      title: 'Fetch your balance',
-      label: `from the testnet`,
-      action: `Fetch your balance from the testnet`,
+      title: 'Get Yield Opportunities',
+      label: `for USDC`,
+      action: `Get Yield Opportunities for USDC from Morpho`,
     },
     {
-      title: 'Send a transaction',
-      label: `to a testnet address`,
-      action: `Send a transaction to a testnet address`,
+      title: 'Get Token Overview',
+      label: `for VIRTUAL`,
+      action: `Get Token Overview for VIRTUAL`,
     },
     {
-      title: 'Check your transactions',
-      label: 'in the testnet',
-      action: 'Check your transactions in the testnet',
+      title: 'Show your Portfolio',
+      label: `on Base`,
+      action: `Show your Portfolio on Base`,
     },
   ];
 

@@ -4,8 +4,7 @@ export const SUPPORTED_NETWORKS: Chain[] = [
     baseSepolia,
     base,
     mainnet,
-    sepolia,
     goerli
 ]
 
-export const DEFAULT_NETWORK = baseSepolia;
+export const DEFAULT_NETWORK = base;
