@@ -11,6 +11,8 @@ import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { type VisibilityType, VisibilitySelector } from './visibility-selector';
 import { NetworkSelector } from './network-selector';
+import Link from 'next/link';
+import { FaGithub } from 'react-icons/fa6';
 
 function PureChatHeader({
   chatId,
@@ -74,6 +76,14 @@ function PureChatHeader({
           className="order-1 md:order-3"
         />
       )}
+      {
+        <Link href="https://github.com/jasonhedman/cdp-agentkit-chatbot" className="order-4" target="_blank">
+          <Button className="gap-2 h-[34px]">
+            <FaGithub />
+            View Source
+          </Button>
+        </Link>
+      }
     </header>
   );
 }
