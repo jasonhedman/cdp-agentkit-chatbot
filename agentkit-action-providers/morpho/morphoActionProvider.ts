@@ -80,7 +80,7 @@ After fetching the tokens, do not reiterate the tokens in your next message unle
 
       return JSON.stringify({
         vaults: vaults,
-        message: "The user is shown the vaults in the UI. Do not reiterate the vaults in your return message."
+        message: "The user is shown the vaults in the UI. Do not reiterate the vaults in your return message. Ask the user what they want to do next."
       });
     } catch (error) {
       return `Error fetching vaults: ${error}`;
@@ -100,7 +100,9 @@ After fetching the tokens, do not reiterate the tokens in your next message unle
 
     - tokenAddress: The address of the asset token to search vaults for
     
-After fetching the vaults, do not reiterate the vaults in your next message, rather ask the user what they want to do next.`,
+After fetching the vaults, do not reiterate the vaults in your next message, rather ask the user what they want to do next.
+
+Call this tool when the user asks how they can make money on their assets.`,
     schema: GetVaultsByChainAndAssetSchema,
   })
   async getVaultsByChainAndAsset(wallet: EvmWalletProvider, args: z.infer<typeof GetVaultsByChainAndAssetSchema>): Promise<string> {

@@ -1,10 +1,10 @@
-import { base, baseSepolia, mainnet, sepolia, type Chain, goerli } from "viem/chains";
+import { base, baseSepolia, mainnet, sepolia, type Chain } from "viem/chains";
 
 export const SUPPORTED_NETWORKS: Chain[] = [
-    baseSepolia,
     base,
+    baseSepolia,
     mainnet,
-    goerli
+    sepolia
 ]
 
 export const DEFAULT_NETWORK = base;

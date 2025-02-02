@@ -80,7 +80,7 @@ After fetching the tokens, do not reiterate the tokens in your next message unle
 
       return JSON.stringify({
         tokens: trendingTokens.tokens,
-        message: "The user is shown the tokens in the UI. Do not reiterate the tokens in your return message."
+        message: "The user is shown the tokens in the UI. Do not reiterate the tokens in your return message. Ask the user what they want to do next."
       });
     } catch (error) {
       return `Error fetching trending tokens: ${error}`;
@@ -128,7 +128,7 @@ After fetching the tokens, do not reiterate the tokens in your next message unle
           network: birdeyeNetwork,
           apiKey: this.birdeyeApiKey
         }),
-        message: "The user is shown the token in the UI. Do not reiterate the token details in your return message."
+        message: "The user is shown the token in the UI. Do not reiterate the token details in your return message. Ask the user what they want to do next."
       });
     } catch (error) {
       return JSON.stringify({

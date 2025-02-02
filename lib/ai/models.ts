@@ -16,14 +16,6 @@ export interface Model {
 
 export const models: Array<Model> = [
   {
-    id: 'gpt-4o-mini',
-    label: 'GPT 4o mini',
-    apiIdentifier: 'gpt-4o-mini',
-    description: 'OpenAI\'s small model for fast, lightweight tasks',
-    logoUrl: '/images/openai.png',
-    provider: ModelProvider.OPENAI,
-  },
-  {
     id: 'gpt-4o',
     label: 'GPT 4o',
     apiIdentifier: 'gpt-4o',
@@ -32,10 +24,18 @@ export const models: Array<Model> = [
     provider: ModelProvider.OPENAI,
   },
   {
+    id: 'gpt-4o-mini',
+    label: 'GPT 4o mini',
+    apiIdentifier: 'gpt-4o-mini',
+    description: 'OpenAI\'s small model for fast, lightweight tasks',
+    logoUrl: '/images/openai.png',
+    provider: ModelProvider.OPENAI,
+  },
+  {
     id: 'claude-3-5-sonnet-latest',
     label: 'Claude 3.5 Sonnet',
     apiIdentifier: 'claude-3-5-sonnet-latest',
-    description: 'Anthropic\'s model for fast, lightweight tasks',
+    description: 'Anthropic\'s model for complex, multi-step tasks',
     logoUrl: '/images/anthropic.png',
     provider: ModelProvider.ANTHROPIC,
   },
