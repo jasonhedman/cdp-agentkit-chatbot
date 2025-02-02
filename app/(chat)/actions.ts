@@ -1,6 +1,6 @@
 'use server';
 
-import { type CoreUserMessage, generateText, Message } from 'ai';
+import { generateText, Message } from 'ai';
 import { cookies } from 'next/headers';
 
 import { getModel } from '@/lib/ai';
@@ -10,7 +10,7 @@ import {
   updateChatVisiblityById,
 } from '@/lib/db/queries';
 import { VisibilityType } from '@/components/visibility-selector';
-import { DEFAULT_MODEL_NAME } from '@/lib/ai/models';
+
 import { models } from '@/lib/ai/models';
 
 export async function saveModelId(model: string) {

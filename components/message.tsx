@@ -19,6 +19,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collap
 import { MessageEditor } from './message-editor';
 import { getToolInfo } from '@/lib/ai/agentkit/tool-info';
 import { ChevronDown } from 'lucide-react';
+import AgentkitTool from './agentkit-tool';
 
 const PurePreviewMessage = ({
   chatId,
@@ -83,47 +84,12 @@ const PurePreviewMessage = ({
             {message.toolInvocations && message.toolInvocations.length > 0 && (
               <div className="flex flex-col gap-4">
                 {message.toolInvocations.map((toolInvocation) => {
-                  const { toolName, toolCallId, state, args } = toolInvocation;
-
-                  const toolInfo = getToolInfo(toolName);
-
-                  if (state === 'result') {
-                    const { result } = toolInvocation;
-
-                    return (
-                      <Collapsible key={toolCallId} className="flex flex-col gap-2">
-                        <CollapsibleTrigger className="flex flex-row items-center gap-2">
-                          {toolInfo?.icon}
-                          <p>{toolInfo?.title || toolName}</p>
-                          <div className="stat">
-                            <ChevronDown className="size-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
-                          </div>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <div className="rounded-md bg-neutral-100 p-2">
-                            <Markdown>{result}</Markdown>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    );
-                  }
                   return (
-                    <div
-                      key={toolCallId}
-                      className={cx({
-                        skeleton: ['getWeather'].includes(toolName),
-                      })}
-                    >
-                      {toolInfo ? (
-                        <div className="flex flex-row items-center gap-2">
-                          {toolInfo.icon}
-                          <p>{toolInfo.loading}</p>
-                        </div>
-                      ) : (
-                        <p>{toolName}</p>
-                      )}
-                    </div>
-                  );
+                    <AgentkitTool
+                      key={toolInvocation.toolCallId}
+                      toolInvocation={toolInvocation}
+                    />
+                  )
                 })}
               </div>
             )}

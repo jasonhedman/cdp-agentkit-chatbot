@@ -215,3 +215,7 @@ export function getDocumentTimestampByIndex(
 
   return documents[index].createdAt;
 }
+
+export const truncateAddress = (address: string) => {
+  return `${address.slice(0, 6)}...${address.slice(-6)}`;
+}

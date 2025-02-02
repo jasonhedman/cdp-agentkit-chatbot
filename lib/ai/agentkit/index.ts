@@ -16,6 +16,7 @@ import { privateKeyToAccount } from "viem/accounts";
 
 import { getVercelAITools } from "./get-vercel-ai-tools";
 import { DEFAULT_NETWORK, SUPPORTED_NETWORKS } from "../../networks";
+import { birdeyeActionProvider } from "@/agentkit-action-providers/birdeye/birdeyeActionProvider";
 
 /**
  * Initialize the agent with CDP Agentkit and Vercel AI SDK tools
@@ -41,26 +42,26 @@ export async function initializeAgent({
   
       const walletProvider = new ViemWalletProvider(client);
   
-      // Initialize action providers
-      const cdp = cdpApiActionProvider({
-        apiKeyName: process.env.CDP_API_KEY_NAME,
-        apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
-      });
-      const cdpWallet = cdpWalletActionProvider({
-        apiKeyName: process.env.CDP_API_KEY_NAME,
-        apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
-      });
-      const erc721 = erc721ActionProvider();
-      const erc20 = erc20ActionProvider();
-      const pyth = pythActionProvider();
-      const wallet = walletActionProvider();
-      const morpho = morphoActionProvider();
-      const basename = basenameActionProvider();
-      const weth = wethActionProvider();
-  
       const agentKit = await AgentKit.from({ 
         walletProvider,
-        actionProviders: [cdp, cdpWallet, erc721, pyth, wallet, morpho, basename, erc20, weth],
+        actionProviders: [
+          cdpApiActionProvider({
+            apiKeyName: process.env.CDP_API_KEY_NAME,
+            apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
+          }),
+          cdpWalletActionProvider({
+            apiKeyName: process.env.CDP_API_KEY_NAME,
+            apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
+          }),
+          erc721ActionProvider(),
+          pythActionProvider(),
+          walletActionProvider(),
+          morphoActionProvider(),
+          basenameActionProvider(),
+          erc20ActionProvider(),
+          wethActionProvider(),
+          ...(process.env.BIRDEYE_API_KEY ? [birdeyeActionProvider(process.env.BIRDEYE_API_KEY)] : []),
+        ],
       });
   
       const tools = getVercelAITools(agentKit);

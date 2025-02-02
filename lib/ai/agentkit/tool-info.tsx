@@ -110,6 +110,18 @@ const toolInfo = {
         title: "Deposited WETH",
         icon: <Image src="/images/weth.png" alt="Weth" {...imageProps} />,
     },
+
+    // Birdeye
+    "BirdeyeActionProvider_get_trending_tokens": {
+        loading: "Fetching trending tokens...",
+        title: "Fetched trending tokens",
+        icon: <Image src="/images/birdeye.png" alt="Birdeye" {...imageProps} />,
+    },
+    "BirdeyeActionProvider_search_tokens": {
+        loading: "Searching tokens...",
+        title: "Searched tokens",
+        icon: <Image src="/images/birdeye.png" alt="Birdeye" {...imageProps} />,
+    },
 } as const;
 
 export const getToolInfo = (toolName: string) => {
